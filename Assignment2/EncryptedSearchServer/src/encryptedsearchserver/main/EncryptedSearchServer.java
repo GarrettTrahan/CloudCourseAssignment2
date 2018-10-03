@@ -24,13 +24,11 @@ public class EncryptedSearchServer {
         //Search indefinitely
         CloudSearcher searcher = new CloudSearcher();
 
-        //do {
+       System.out.println("Server Side Running: Waiting for Search Term.....");
         Config.loadProperties();
         searcher.ReceiveQuery();
-        //System.out.println(searcher.rankRelatedFiles());
-
-        //    searcher.sendResultsToClient();
-        //} while (true);
+        searcher.searchTermInIndex();
+        searcher.sendResultsToClient();
     }
     
 

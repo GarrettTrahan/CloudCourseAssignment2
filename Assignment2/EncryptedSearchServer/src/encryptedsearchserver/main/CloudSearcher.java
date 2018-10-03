@@ -7,10 +7,8 @@ package encryptedsearchserver.main;
 
 import encryptedsearchserver.utilities.Config;
 import encryptedsearchserver.utilities.Constants;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,28 +28,20 @@ public class CloudSearcher {
     private ServerSocket serv;
     private Socket sock;
     private long searchTime;
+    private  String searchResultForClient = null;
 
     //Uhhhh....
     public CloudSearcher() {
         query = new ArrayList<String>();
        }
 
-
-    /**
-     * Receive the query info as sent from the client.
-     * Post-conditions:
-     *  query will be filled with the query and weight data
-     * After this, the system is set to perform ranking.
-     */
     public void ReceiveQuery() {
         //Open up the sockets and let the data flow in.
         try {
             serv = new ServerSocket(Config.socketPort);
             sock = serv.accept();
-
             sock.setKeepAlive(true);
             sock.setSoTimeout(10000);
-            System.out.println("\nNow awaiting Search...");
 
         } catch (IOException ex) {
             System.err.println(CloudSearcher.class.getName() + ": Error opening port");
@@ -65,7 +55,6 @@ public class CloudSearcher {
             for (int i = 0; i < numTerms; i++) {
                 String term = dis.readUTF();
                       query.add(term);
-                      System.out.print(term);
             }
 
             dis.close();
@@ -75,30 +64,28 @@ public class CloudSearcher {
             System.err.println(CloudSearcher.class.getName() + " Error getting query from client.");
         }
 
-        //Now the query holds the Q' with its weights
-
-        //System.out.println("Query: " + query);
-
     }
 
     public void searchTermInIndex(){
-
-        final Scanner scanner = new Scanner(Constants.indexFileLocation + File.separator + Constants.indexFileName);
-
-
         for(String searchName: query){
-            while (scanner.hasNextLine()) {
-                final String lineFromFile = scanner.nextLine();
-                if(lineFromFile.contains(query.toString())) {
-                    // a match!
-                    System.out.println("I found " +query+ " in file " + lineFromFile);
-                    break;
+            File file = new File(Constants.indexFileLocation + File.separator + Constants.indexFileName);
+
+            BufferedReader br = null;
+            try {
+                br = new BufferedReader(new FileReader(file));
+                String st;
+                while ((st = br.readLine()) != null) {
+
+                String [] spiltWords =  st.split("\\|.\\|");
+                  if(spiltWords[0].equals(searchName)){
+                      System.out.print("Match Find on Index File!");
+                      searchResultForClient = st;
+                  }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-
-
-
     }
 
 
@@ -111,18 +98,7 @@ public class CloudSearcher {
             serv = new ServerSocket(Config.socketPort);
             sock = serv.accept();
             DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
-
-            int numSearchResults = Math.min(Config.numSearchResults, searchResults.size());
-            dos.writeInt(numSearchResults);
-
-            for (int i = 0; i < numSearchResults; i++) {
-                dos.writeUTF(searchResults.get(i));
-            }
-
-            // If we're taking metrics, send the time info back to the client.
-            if (Config.calcMetrics)
-                dos.writeLong(searchTime);
-
+            dos.writeUTF(searchResultForClient);
             dos.close();
             sock.close();
             serv.close();
