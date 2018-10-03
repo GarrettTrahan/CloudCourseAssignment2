@@ -33,43 +33,17 @@ public class ClientEncryptedSearch {
     public ClientEncryptedSearch(String[] args) {
         //Load properties
         Config.loadProperties();
-        
-        //Determine what the user wants to do
-        switch (args[0]) {
-
-            case "-s":
-                //Begin timing for search
-                long begin = System.currentTimeMillis();
-                search(args[1]);
-                long end = System.currentTimeMillis();
-                break;
-        }
+                search(args[0]);
     }
 
     private static String[] getUserInput() {
-        String[] args = new String[2];
+        String[] args = new String[1];
         System.out.println("Welcome to Search Data in the Cloud.");
-        System.out.println("Client Version: For Search press -s");
-
         //Get input
         Scanner scan;
         scan = new Scanner(System.in);
-
-        String choice = scan.nextLine();
-        args[0] = choice;
-
-        switch (choice) {
-
-            case "-s": //Search
-                System.out.println("Enter search query: ");
-                args[1] = scan.nextLine();
-                break;
-
-            default:
-                System.out.println("I'm sorry, I do not recognize that input");
-                break;
-        }
-
+        System.out.println("Enter search query: ");
+        args[0] = scan.nextLine();
         return args;
     }
     

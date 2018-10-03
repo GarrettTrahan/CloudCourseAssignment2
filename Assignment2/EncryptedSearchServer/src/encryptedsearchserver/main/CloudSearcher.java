@@ -78,7 +78,9 @@ public class CloudSearcher {
 
                 String [] spiltWords =  st.split("\\|.\\|");
                   if(spiltWords[0].equals(searchName)){
-                      System.out.print("Match Find on Index File!");
+                      System.out.println("Match Find on Index File!");
+                      System.out.println("Sending following result to the client side:");
+                      System.out.println(st);
                       searchResultForClient = st;
                   }
                 }
