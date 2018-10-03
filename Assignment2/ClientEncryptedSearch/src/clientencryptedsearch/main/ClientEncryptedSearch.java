@@ -5,7 +5,7 @@
  */
 package clientencryptedsearch.main;
 
-import clientencryptedsearch.utilities.Config;
+
 
 import java.util.Scanner;
 
@@ -31,8 +31,7 @@ public class ClientEncryptedSearch {
     }
     
     public ClientEncryptedSearch(String[] args) {
-        //Load properties
-        Config.loadProperties();
+
                 search(args[0]);
     }
 
@@ -53,8 +52,7 @@ public class ClientEncryptedSearch {
     public void search(String query)  {
         // Start timing
         ClientSearcher searcher = new ClientSearcher(query); //Constructor just initializes
-        //Rank our abstracts based on the query and send it over.
-        Config.loadProperties();
+
         //Search!
         searcher.search();
         searcher.acceptResults();

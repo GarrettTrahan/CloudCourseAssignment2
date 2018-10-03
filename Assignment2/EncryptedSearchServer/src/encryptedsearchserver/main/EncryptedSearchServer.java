@@ -25,7 +25,6 @@ public class EncryptedSearchServer {
         CloudSearcher searcher = new CloudSearcher();
 
        System.out.println("Server Side Running: Waiting for Search Term.....");
-        Config.loadProperties();
         searcher.ReceiveQuery();
         searcher.searchTermInIndex();
         searcher.sendResultsToClient();

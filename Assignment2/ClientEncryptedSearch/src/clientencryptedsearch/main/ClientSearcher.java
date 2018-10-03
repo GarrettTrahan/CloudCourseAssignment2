@@ -5,7 +5,7 @@
  */
 package clientencryptedsearch.main;
 
-import clientencryptedsearch.utilities.Config;
+
 import clientencryptedsearch.utilities.StopwordsRemover;
 
 import java.io.DataInputStream;
@@ -105,7 +105,7 @@ public class ClientSearcher {
         while(scanning) {
             //Now send allWeights over a socket.
             try {
-                sock = new Socket(Config.cloudIP, Config.socketPort);
+                sock = new Socket("localhost", 1350);
 
                 DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
 
@@ -147,7 +147,7 @@ public class ClientSearcher {
         boolean scanning = true;
         while(scanning) {
             try {
-                sock = new Socket(Config.cloudIP, Config.socketPort);
+                sock = new Socket("localhost", 1350);
                 dis = new DataInputStream(sock.getInputStream());
                 searchResults = dis.readUTF();
                 System.out.println("Results From Server");

@@ -5,7 +5,7 @@
  */
 package encryptedsearchserver.main;
 
-import encryptedsearchserver.utilities.Config;
+
 import encryptedsearchserver.utilities.Constants;
 
 import java.io.*;
@@ -38,7 +38,7 @@ public class CloudSearcher {
     public void ReceiveQuery() {
         //Open up the sockets and let the data flow in.
         try {
-            serv = new ServerSocket(Config.socketPort);
+            serv = new ServerSocket(1350);
             sock = serv.accept();
             sock.setKeepAlive(true);
             sock.setSoTimeout(10000);
@@ -97,7 +97,7 @@ public class CloudSearcher {
         System.out.println("\nSending search results to client...");
         // Uses the same connection from before.  Maybe bad?
         try {
-            serv = new ServerSocket(Config.socketPort);
+            serv = new ServerSocket(1350);
             sock = serv.accept();
             DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
             dos.writeUTF(searchResultForClient);
