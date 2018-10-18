@@ -6,8 +6,6 @@
 package searchserver.main;
 
 
-import searchserver.utilities.Constants;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -28,6 +26,10 @@ public class CloudSearcher {
     private Socket sock;
     private long searchTime;
     private  String searchResultForClient = null;
+    public static String indexFileLocation = ".." + File.separator + "index";
+
+    //Name of the index file
+    public static String indexFileName = "Index.txt";
 
     //Uhhhh....
     public CloudSearcher() {
@@ -67,7 +69,7 @@ public class CloudSearcher {
 
     public void searchTermInIndex(){
         for(String searchName: query){
-            File file = new File(Constants.indexFileLocation + File.separator + Constants.indexFileName);
+            File file = new File(indexFileLocation + File.separator + indexFileName);
 
             BufferedReader br = null;
             try {

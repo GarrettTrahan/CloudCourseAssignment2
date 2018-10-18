@@ -6,8 +6,6 @@
 package clientsearch.main;
 
 
-import clientsearch.utilities.StopwordsRemover;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -26,12 +24,6 @@ import java.util.logging.Logger;
  */
 public class ClientSearcher {
     String originalQuery;
-
-
-    StopwordsRemover stop;
-    StopwordsRemover wikiStop;
-
-
     ArrayList<String> searhTerm  = new ArrayList<String>();
     Socket sock;
     ArrayList<String> searchResults;
@@ -45,12 +37,8 @@ public class ClientSearcher {
      */
     public ClientSearcher(String query) {
         originalQuery = query.toLowerCase();
-
-        stop = new StopwordsRemover("stopwords_en.txt");
-        wikiStop = new StopwordsRemover("wiki_stopwords_en.txt");
-
         constructQuery();
-       searchResults = new ArrayList<>();
+        searchResults = new ArrayList<>();
 
     }
 
